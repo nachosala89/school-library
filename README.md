@@ -2,6 +2,10 @@
 
 > This project consists of a basic school library app. It is implemented in Ruby following the OOP paradigm and the users can interact with the app through the command line interface.
 
+## Build With
+
+- Ruby
+
 ## Prerequisites
 
 Ruby >= 3.0.0
