@@ -5,9 +5,7 @@ class Corrector
       input.first.upcase!
       input = input.join
     end
-    if input.length > 10
-      input = input [0, 10]
-    end
+    input = input [0, 10] if input.length > 10
     input
   end
 end
