@@ -4,16 +4,8 @@ class Rental
   def initialize(date, book, person)
     @date = date
     @book = book
+    book.rentals.push(self) unless book.rentals.include?(self)
     @person = person
-  end
-
-  def book=(book)
-    @book = book
-    book.students.push(self) unless book.students.include?(self)
-  end
-
-  def person=(person)
-    @person = person
-    person.students.push(self) unless person.students.include?(self)
+    person.rentals.push(self) unless person.rentals.include?(self)
   end
 end
