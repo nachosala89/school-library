@@ -2,30 +2,31 @@ require './person'
 require './student'
 require './teacher'
 require './book'
+require './rental'
 
-def list_books
-  $books.each do |book|
+def list_books(books)
+  books.each do |book|
     puts "Title: \"#{book.title}\", Author: #{book.author}"
   end
 end
 
-def list_people
-  $people.each do |person|
+def list_people(people)
+  people.each do |person|
     puts "[#{person.class}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
   end
 end
 
-def create_book
+def create_book(books)
   puts 'Title: '
   title = gets.chomp
   puts 'Author: '
   author = gets.chomp
   book = Book.new(title, author)
-  $books.push(book)
-  puts 'Book created successfully!' if ($books.include?(book))
+  books.push(book)
+  puts 'Book created successfully!' if books.include?(book)
 end
 
-def create_person
+def create_person(people)
   print 'Do you want to create a student (1) or a teacher (2)? [Input the number]: '
   option = gets.chomp
   puts 'Age: '
@@ -34,67 +35,69 @@ def create_person
   name = gets.chomp
   person = nil
   case option
-  when "1"
+  when '1'
     puts 'Has parent permission? [Y/N]: '
     permission = gets.chomp
     permission = (permission.downcase == 'y')
     person = Student.new(age, name, permission)
-    $people.push(person)
-  when "2"
+  when '2'
     puts 'Specialization:'
     specialization = gets.chomp
     person = Teacher.new(age, specialization, name)
-    $people.push(person)
   end
-  puts 'Person created successfully!' if ($people.include?(person))
+  people.push(person)
+  puts 'Person created successfully!' if people.include?(person)
 end
 
-def create_rental
+def create_rental(books, people)
   puts 'Select a book from the following list by number: '
-  $books.each_with_index do |book, index|
+  books.each_with_index do |book, index|
     puts "#{index}) Title: \"#{book.title}\", Author: #{book.author}"
   end
   index_book = gets.chomp.to_i
   puts ''
   puts 'Select a person from the following list by number (not ID): '
-  $people.each_with_index do |person, index|
+  people.each_with_index do |person, index|
     puts "#{index}) [#{person.class}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
   end
   index_person = gets.chomp.to_i
   puts 'Date: '
   date = gets.chomp
-  Rental.new(date, $books[index_book], $people[index_person])
+  Rental.new(date, books[index_book], people[index_person])
 end
 
-def list_rentals
+def list_rentals(people)
   print 'ID of the person: '
   id = gets.chomp.to_i
-  rentals = $people.select{|person| person.id = id}.rentals
-  rentals.each do |rental|
-    puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
+  person = people.detect { |person| person.id == id }
+  unless person.nil?
+    rentals = person.rentals
+    rentals.each do |rental|
+      puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
+    end
   end
 end
 
-def display(option)
+def display(option, books, people)
   case option
-  when "1"
-    list_books
-  when "2"
-    list_people
-  when "3"
-    create_person
-  when "4"
-    create_book
-  when "5"
-    create_rental
-  when "6"
-    list_rentals
+  when '1'
+    list_books(books)
+  when '2'
+    list_people(people)
+  when '3'
+    create_person(people)
+  when '4'
+    create_book(books)
+  when '5'
+    create_rental(books, people)
+  when '6'
+    list_rentals(people)
   end
 end
 
 def main
-  $books = []
-  $people = []
+  books = []
+  people = []
   puts 'Welcome to School Library App!'
   puts ''
   loop do
@@ -107,8 +110,9 @@ def main
     puts '6 - List all rentals for a given person id.'
     puts '7 - Exit'
     option = gets.chomp
-    break if (option == "7")
-    display(option)
+    break if option == '7'
+
+    display(option, books, people)
     puts ''
   end
 end
