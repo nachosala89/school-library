@@ -69,12 +69,12 @@ end
 def list_rentals(people)
   print 'ID of the person: '
   id = gets.chomp.to_i
-  person = people.detect { |person| person.id == id }
-  unless person.nil?
-    rentals = person.rentals
-    rentals.each do |rental|
-      puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
-    end
+  person = people.detect { |item| item.id == id }
+  return if person.nil?
+
+  rentals = person.rentals
+  rentals.each do |rental|
+    puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
   end
 end
 
