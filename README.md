@@ -17,6 +17,7 @@ Ruby >= 3.0.0
    git clone https://github.com/nachosala89/school-library.git
    ```
 - Go to the cloned directory with `cd school-library`
+- Run `ruby main.rb` to start the program.
 
 ## Author
 
