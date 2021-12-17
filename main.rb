@@ -1,8 +1,8 @@
-require './person'
-require './student'
-require './teacher'
-require './book'
-require './rental'
+require_relative './person'
+require_relative './student'
+require_relative './teacher'
+require_relative './book'
+require_relative './rental'
 
 def list_books(books)
   books.each do |book|
@@ -39,7 +39,7 @@ def create_person(people)
     puts 'Has parent permission? [Y/N]: '
     permission = gets.chomp
     permission = (permission.downcase == 'y')
-    person = Student.new(age, name, permission)
+    person = Student.new(age, name, parent_permission: permission)
   when '2'
     puts 'Specialization:'
     specialization = gets.chomp
